@@ -1,0 +1,25 @@
+
+.container {
+    display: flex;
+    gap: 10px;
+}
+
+.container #myDropdown {
+    width: 100%;
+    background: #2a2b38;
+    color: whitesmoke;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 5px;
+    outline: none;
+}
+
+.container img{
+    width: 30px;
+    padding: 5px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: #2a2b38;
+}
+
+

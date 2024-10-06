@@ -1,0 +1,76 @@
+.joinRoom {
+    background: #2a2b38;
+    width: 500px;
+    height: 300px;
+    padding: 1rem;
+    border-radius: 10px;
+    margin:0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.heading{
+    background: #2a2b38;
+}
+
+.heading img {
+    width: 200px;
+    margin-left: 20px;
+}
+
+
+.form_div {
+    background: #2a2b38;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-left: 20px;
+    padding: 10px 1%;
+}
+
+.form_div input{
+    background: black;
+    padding: 15px;
+    font-size: 16px;
+    color: white;
+    font-weight: 500;
+    border: none;
+    border-radius: 10px;
+}
+
+
+.form_div button {
+    width: 85px;
+    /* color: white; */
+    padding:5px;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    margin-left: auto;
+    background:rgb(255, 102, 255);
+    cursor: pointer;
+}
+
+.form_div button:hover{
+    background: rgb(203, 1, 203);
+}
+
+.new_room {
+    background: #2a2b38;
+    color: white;
+    font-size: 18px;
+    text-align: center;
+}
+
+.new_room span {
+    background: #2a2b38;
+    color: rgb(255, 102, 255);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.new_room span:hover {
+    color: rgb(203, 1, 203);
+}

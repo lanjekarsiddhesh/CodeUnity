@@ -1,24 +1,24 @@
-import logo from './logo.svg';
+import { Route, Routes, BrowserRouter  } from 'react-router-dom';
 import './App.css';
+import Joinroom from './components/Joinroom/Joinroom';
+import EditorPage from './components/EditorPage/EditorPage';
+import { Toaster } from 'react-hot-toast';
+import Editor from './components/Editor/Editor'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      
+      <Toaster/>
+      <BrowserRouter>
+      <Routes>
+        <Route path='/join-room' element={<Joinroom/>}></Route>
+        <Route path='/' element={<Editor/>}></Route>
+        <Route path='/editor/:id' element={<EditorPage/>}></Route>     
+      {/* <Room/> */}
+      </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 

@@ -1,0 +1,14 @@
+.client {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 15px;
+    color: white;
+    font-size: 17px;
+    font-weight: 500;
+    padding: 0 10px;
+}
+span{
+    text-align: center;
+}
