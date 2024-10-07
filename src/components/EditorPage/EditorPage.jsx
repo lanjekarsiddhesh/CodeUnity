@@ -1,17 +1,59 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './EditorPage.css'
 import logo from '../../assests/logo3.png'
 import Client from '../Client/Client'
 import Editor from '../Editor/Editor'
 import toast from 'react-hot-toast'
+import { initSocket } from '../../socket'
+import ACTIONS from '../../Action'
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 
 const EditorPage = () => {
-    const [clients, setClient] = useState([
-        { SocketId: 1, Username: 'John Doe'},
-        { SocketId: 2, Username: 'Siddhesh'},
-        { SocketId: 3, Username: 'John'},
-        { SocketId: 4, Username: 'Doe'},
-    ])
+    const socketRef = useRef(null)
+    const location = useLocation()
+    const [clients, setClient] = useState([])
+    const reactNvigator = useNavigate()
+    const {roomID} = useParams()
+
+    useEffect(()=>{
+        const init = async ()=>{
+            socketRef.current = await initSocket();
+
+            socketRef.current.on('connect_error', (err) => handleErrors(err));
+            socketRef.current.on('connect_failed', (err) => handleErrors(err));
+
+            function handleErrors(e) {
+                console.log('socket error', e);
+                toast.error('socket connection failed try again !!!');
+                reactNvigator('/');
+            }
+
+            socketRef.current.emit(ACTIONS.JOIN,{
+                roomID,
+                username: location.state?.username,
+            });
+
+
+            //listing for join event
+
+            socketRef.current.on(ACTIONS.JOINED, ({client, username,socketId})=>{
+                if(username !== location.state?.username){
+                    toast.success(`${username} joined the room`)
+                    console.log(`${username} joined the room`)
+                }
+                setClient(client)
+            })
+        }
+        init();
+    },[])
+
+    console.log(clients)
+
+
+    if (!location.state){
+        return <Navigate to="/"/>
+    }
+    
 
 
     const CopyRoomID = ()=>{
@@ -34,7 +76,7 @@ const EditorPage = () => {
                 <h3>Connected</h3>
                 <div className="clientlist">
                     {clients.map((client)=>{
-                        return <Client key={client.SocketId} username={client.Username}/>
+                        return <Client key={client.socketId} username={client.username}/>
                     })}
                 </div>
             </div>

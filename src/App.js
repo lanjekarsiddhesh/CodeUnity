@@ -14,7 +14,7 @@ function App() {
       <Routes>
         <Route path='/join-room' element={<Joinroom/>}></Route>
         <Route path='/' element={<Editor/>}></Route>
-        <Route path='/editor/:id' element={<EditorPage/>}></Route>     
+        <Route path='/editor/:roomID' element={<EditorPage/>}></Route>     
       {/* <Room/> */}
       </Routes>
       </BrowserRouter>
