@@ -1,8 +1,18 @@
 const express = require('express')
-const app = express()
+const cors = require('cors');
 const http = require('http')
 const {Server} = require('socket.io');
 const ACTIONS = require('./src/Action');
+
+const app = express()
+
+const corsOptions = {
+    origin: 'http://localhost:3000', // Specify your frontend URL
+    methods: ['GET', 'POST'],
+    credentials: true,
+  };
+
+  app.use(cors(corsOptions));
 
 
 const server = http.createServer(app);
@@ -24,19 +34,24 @@ io.on('connection', (socket)=>{
     console.log(`socket connected ${socket.id}`)
 
     socket.on(ACTIONS.JOIN, ({roomID, username})=>{
+        console.log(roomID,username, "ser")
         userSocketMap[socket.id] = username;
         socket.join(roomID);
-        const client = getAllConnectedClients(roomID)
-        console.log(client)
-        client.forEach((socketID)=>{
+        const clients = getAllConnectedClients(roomID)
+        console.log()
+        clients.forEach(({socketID})=>{
             io.to(socketID).emit(ACTIONS.JOINED, {
-                client,
+                clients,
                 username,
                 socketID: socket.id,
             })
         })
     })
+
 })
+
+
+
 
 
 const PORT = process.env.PORT || 5000;

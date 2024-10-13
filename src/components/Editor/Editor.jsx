@@ -36,7 +36,6 @@ const Editor = ({theme}) => {
     useEffect(() => {
         codeEditor() // eslint-disable-next-line
         return () => {
-            // Cleanup function to prevent memory leaks
             if (editorRef.current) {
                 editorRef.current.toTextArea(); // Converts back to a textarea
                 editorRef.current = null; // Reset the ref
