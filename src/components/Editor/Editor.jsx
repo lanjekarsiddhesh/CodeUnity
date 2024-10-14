@@ -9,8 +9,9 @@ import 'codemirror/addon/edit/closebrackets';
 import 'codemirror/addon/edit/closetag';
 import themelst from './theme'
 import run from '../../assests/triangle.png'
+import ACTIONS from '../../Action';
 
-const Editor = ({theme}) => {
+const Editor = ({theme, socketRef, roomID, onCodeChange}) => {
 
     const editorRef = useRef(null);
 
@@ -27,6 +28,23 @@ const Editor = ({theme}) => {
                 viewportMargin: Infinity,
                 lineNumbers: true
             });
+
+            editorRef.current.on('change', (instance, changes)=>{
+                // console.log(changes)
+                const {origin} = changes
+                const code = instance.getValue();
+                onCodeChange(code);
+                if (origin !== 'setValue'){
+                    socketRef.current.emit(ACTIONS.CODE_CHANGE, {
+                        roomID,
+                        code,
+                    });
+
+                }
+                // console.log(code)
+            })
+
+            // editorRef.current.setValue('console.log("hello siddhesh")')
 
             editorRef.current.getWrapperElement().style.height = '92.5vh';
         }
@@ -49,6 +67,21 @@ const Editor = ({theme}) => {
             localStorage.setItem('Theme', Theme); // Store the theme in LocalStorage
         }
     }, [Theme]); 
+
+    useEffect(()=>{
+        if (socketRef.current){
+        socketRef.current.on(ACTIONS.CODE_CHANGE,({code})=>{
+            if (code !== null){
+                editorRef.current.setValue(code)
+            }
+        })
+    }
+
+    // return ()=>{
+    //     socketRef.current.off(ACTIONS.CODE_CHANGE)
+    // }
+
+    },[socketRef.current])
 
   return (<div className='editor'>
     <div className="container">

@@ -48,6 +48,27 @@ io.on('connection', (socket)=>{
         })
     })
 
+    socket.on(ACTIONS.CODE_CHANGE, ({roomID, code})=>{
+        socket.in(roomID).emit(ACTIONS.CODE_CHANGE,{code});
+    })
+
+    socket.on(ACTIONS.SYNC_CODE, ({socketID, code})=>{
+        io.to(socketID).emit(ACTIONS.CODE_CHANGE,{code});
+    })
+
+    socket.on('disconnecting',()=>{
+        const rooms = [...socket.rooms]
+        rooms.forEach((roomID)=>{
+            socket.in(roomID).emit(ACTIONS.DISCONNECTED,{
+                socketID: socket.id,
+                username: userSocketMap[socket.id],
+            });
+        });
+
+        delete userSocketMap[socket.id];
+        socket.leave();
+    })
+
 })
 
 
